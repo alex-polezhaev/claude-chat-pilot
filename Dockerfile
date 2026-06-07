@@ -16,11 +16,16 @@ RUN npm install -g @anthropic-ai/claude-code @cloudcli-ai/cloudcli \
 ENV HOST=0.0.0.0 \
     SERVER_PORT=3001 \
     CLAUDE_CLI_PATH=claude \
-    DATABASE_PATH=/data/auth.db
+    DATABASE_PATH=/data/auth.db \
+    WORKSPACES_ROOT=/workspace
 
 # /data — логины и настройки интерфейса; /workspace — рабочая папка сотрудника.
 RUN mkdir -p /data /workspace
 WORKDIR /workspace
 
+# При старте создаём готовую рабочую папку, чтобы в интерфейсе сразу был проект.
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 3001
-CMD ["cloudcli", "start"]
+CMD ["/usr/local/bin/entrypoint.sh"]
