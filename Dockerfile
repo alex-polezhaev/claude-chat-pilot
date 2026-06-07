@@ -25,6 +25,9 @@ WORKDIR /workspace
 
 # При старте создаём готовую рабочую папку, чтобы в интерфейсе сразу был проект.
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# Единый источник инструкции агента: файл CLAUDE.md из репо вшивается в образ,
+# entrypoint кладёт его в /workspace/main при старте (без heredoc-дублей).
+COPY CLAUDE.md /usr/local/share/CLAUDE.md
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 3001
