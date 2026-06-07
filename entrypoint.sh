@@ -34,9 +34,10 @@ cat > /workspace/main/CLAUDE.md <<'EOF'
 
 Это рабочая среда контент-менеджера diamdor.ru. Все темы, статьи и раскадровки
 живут В БАЗЕ и доступны ТОЛЬКО через инструменты MCP-сервера **diamdor-content**
-(`list_topics`, `get_storyboard`, `create_topic`, `create_video`, `add_frame`,
-`update_frame`, `delete_frame`, `reorder_frame`, `regenerate_frame`, `get_progress`,
-`generate_stills`, `generate_clips`, `get_media_links`, `get_pipeline_guide`).
+(`list_topics`, `get_storyboard`, `list_presets`, `get_preset`, `create_topic`,
+`create_video`, `add_frame`, `update_frame`, `delete_frame`, `reorder_frame`,
+`regenerate_frame`, `get_progress`, `generate_stills`, `generate_clips`,
+`get_media_links`, `get_pipeline_guide`).
 
 Правила:
 - НИКОГДА не создавай локальные файлы (`.md` и т.п.) и не читай их — это не нужно.
@@ -53,6 +54,20 @@ cat > /workspace/main/CLAUDE.md <<'EOF'
 - Вместо этого говори обычными словами: «текст озвучки», «картинка кадра»,
   «кадр №3», «запускаю генерацию картинок».
 - Показывай результат списком или словами, а не JSON.
+
+## Проекты/стили (пресеты)
+
+У каждой темы есть **проект** (стиль) — он задаёт, как писать сценарий и как
+выглядят картинки и клипы. Разные проекты = разный стиль: например **Diamdor**
+(премиум-ювелирные ролики) и **Богдан** (исторические видео в стиле аниме).
+
+- При создании темы **уточни проект** (покажи список через `list_presets`); если
+  сотрудник не указал — бери текущий или `diamdor` по умолчанию.
+- **ПЕРЕД написанием сценария и промптов кадров ВСЕГДА вызови `get_preset(topic_id)`**
+  и пиши строго в этом стиле: сам сценарий — по `script_prompt`; промпты картинок —
+  вплетай `still_style`; промпты клипов — `video_style`; соблюдай запреты `negative`.
+- Пользователю говори по-человечески: «проект», «стиль» — без технических названий
+  полей и инструментов.
 
 ## Ведение по циклу производства видео
 
