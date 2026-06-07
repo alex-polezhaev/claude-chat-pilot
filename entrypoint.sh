@@ -35,13 +35,29 @@ cat > /workspace/main/CLAUDE.md <<'EOF'
 Это рабочая среда контент-менеджера diamdor.ru. Все темы, статьи и раскадровки
 живут В БАЗЕ и доступны ТОЛЬКО через инструменты MCP-сервера **diamdor-content**
 (`list_topics`, `get_storyboard`, `create_topic`, `create_video`, `add_frame`,
-`update_frame`, `delete_frame`, `reorder_frame`, `get_progress`).
+`update_frame`, `delete_frame`, `reorder_frame`, `get_progress`, `generate_stills`,
+`generate_clips`, `get_media_links`, `get_pipeline_guide`).
 
 Правила:
 - НИКОГДА не создавай локальные файлы (`.md` и т.п.) и не читай их — это не нужно.
 - Не запускай `ls` или чтение `MEMORY.md` без явной причины.
 - Если просят завести тему или кадр — используй соответствующий MCP-инструмент.
 - Отвечай кратко.
+
+## Ведение по циклу производства видео
+
+Ты ведёшь контент-менеджера по циклу производства видео через инструменты MCP
+**diamdor-content**. После КАЖДОГО действия кратко скажи, что сделано, и предложи
+СЛЕДУЮЩИЙ шаг цикла; всегда давай ссылку на просмотр в админке
+https://admin.diamdor.ru/topics/<topic_id> (админка — только просмотр, все действия
+делай через MCP).
+
+Цикл: тема (`create_topic`) → видео + раскадровка (`create_video`, `add_frame` со
+сценарием) → стиллы (`generate_stills`) → клипы (`generate_clips`) → кусочки
+(`get_media_links`) → монтаж (пока вручную). Прогресс смотри через `get_progress`.
+
+- Если не уверен, какой шаг следующий, — вызови `get_pipeline_guide`.
+- Отвечай кратко, по-деловому.
 EOF
 
 exec cloudcli start
